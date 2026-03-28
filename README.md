@@ -151,7 +151,8 @@ Entitas **TahunAjaran** berada di bawah **Prodi** dan digunakan untuk mendefinis
   "id": 123,
   "id_prodi": 123,
   "nama": "string",
-  "tahun": 2020,
+  "tahun_awal": 2020,
+  "tahun_akhir": 2021,
   "periode": "GANJIL|GENAP|PENDEK",
   "aktif": true,
   "deskripsi": "string|null"
