@@ -177,6 +177,7 @@ Entitas **Kurikulum** berada di bawah **Prodi** dan digunakan untuk mendefinisik
 {
   "id": 123,
   "id_prodi": 123,
+  "kode": "string",
   "nama": "string",
   "tahun": 2020,
   "aktif": true,
@@ -200,6 +201,7 @@ Entitas **ProfilLulusan** berada di bawah **Prodi** dan digunakan untuk mendefin
   "id": 123,
   "id_prodi": 123,
   "nomor": 123,
+  "jenis": "UTAMA|TAMABAHAN",
   "nama": "string",
   "aktif": true,
   "deskripsi": "string|null"
@@ -226,7 +228,8 @@ Entitas ini merepresentasikan **Capaian Pembelajaran Lulusan (CPL)**.
   "nomor": 123,
   "nama": "string",
   "aktif": true,
-  "deskripsi": "string|null"
+  "deskripsi_id": "string|null",
+  "deskripsi_en": "string|null"
 }
 ```
 
