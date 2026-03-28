@@ -1,100 +1,40 @@
 # OBE FTM Unjani
 
-Dokumentasi awal struktur endpoint dan model data untuk aplikasi **OBE FTM Unjani**.  
-Dokumen ini mencakup entitas master sampai dengan **MataKuliah**.
+Dokumentasi awal struktur data dan endpoint untuk aplikasi **OBE FTM Unjani**.  
+Dokumen ini saat ini mencakup entitas master sampai dengan **MataKuliah**.
 
 ---
 
 ## Daftar Isi
 
+- [Struktur Data](#struktur-data)
+  - [Universitas](#universitas)
+  - [Fakultas](#fakultas)
+  - [Prodi](#prodi)
+  - [TahunAjaran](#tahunajaran)
+  - [Kurikulum](#kurikulum)
+  - [ProfilLulusan](#profillulusan)
+  - [MasterCPL](#mastercpl)
+  - [MataKuliah](#matakuliah)
 - [Konvensi Endpoint](#konvensi-endpoint)
-- [Universitas](#universitas)
-- [Fakultas](#fakultas)
-- [Prodi](#prodi)
-- [TahunAjaran](#tahunajaran)
-- [Kurikulum](#kurikulum)
-- [ProfilLulusan](#profillulusan)
-- [MasterCPL](#mastercpl)
-- [MataKuliah](#matakuliah)
+- [Endpoint per Entitas](#endpoint-per-entitas)
+  - [Universitas Endpoint](#universitas-endpoint)
+  - [Fakultas Endpoint](#fakultas-endpoint)
+  - [Prodi Endpoint](#prodi-endpoint)
+  - [TahunAjaran Endpoint](#tahunajaran-endpoint)
+  - [Kurikulum Endpoint](#kurikulum-endpoint)
+  - [ProfilLulusan Endpoint](#profillulusan-endpoint)
+  - [MasterCPL Endpoint](#mastercpl-endpoint)
+  - [MataKuliah Endpoint](#matakuliah-endpoint)
 
 ---
 
-## Konvensi Endpoint
-
-Struktur endpoint umum yang digunakan adalah sebagai berikut:
-
-### 1. Akses sebuah entitas
-```http
-GET /api/v1/[nama_entitas]/[id]
-```
-
-### 2. List semua entitas
-```http
-GET /api/v1/list/[nama_entitas]/[id_parent]
-```
-
-> **Catatan:** khusus entitas **Universitas**, parameter `[id_parent]` tidak diperlukan.
-
-### 3. Insert entitas baru
-```http
-POST /api/v1/add/[nama_entitas]
-```
-
-### 4. Update sebuah entitas
-```http
-POST /api/v1/edit/[nama_entitas]/[id]
-```
-
-### 5. Nonaktifkan sebuah entitas
-```http
-DELETE /api/v1/[nama_entitas]/[id]
-```
-
-### 6. Aktifkan kembali sebuah entitas
-```http
-PATCH /api/v1/[nama_entitas]/[id]
-```
-
----
+# Struktur Data
 
 ## Universitas
 
 Entitas **Universitas** adalah level tertinggi dalam struktur data.  
 Satu universitas dapat menaungi banyak fakultas.
-
-### Endpoint
-
-#### Ambil data universitas berdasarkan ID
-```http
-GET /api/v1/universitas/[id]
-```
-
-#### List semua universitas
-```http
-GET /api/v1/list/universitas
-```
-
-#### Tambah universitas baru
-```http
-POST /api/v1/add/universitas
-```
-
-#### Edit universitas
-```http
-POST /api/v1/edit/universitas/[id]
-```
-
-#### Nonaktifkan universitas
-```http
-DELETE /api/v1/universitas/[id]
-```
-
-#### Aktifkan kembali universitas
-```http
-PATCH /api/v1/universitas/[id]
-```
-
-### Struktur Data
 
 ```json
 {
@@ -119,10 +59,16 @@ PATCH /api/v1/universitas/[id]
 }
 ```
 
-### Catatan
-- `id` adalah identitas unik universitas.
-- `aktif` digunakan untuk menandai status aktif/nonaktif.
-- `metadata` digunakan untuk menampung informasi tambahan seperti logo, alamat, kontak, dan email.
+### Keterangan
+- `id`: identitas unik universitas.
+- `nama`: nama universitas.
+- `english`: nama universitas dalam bahasa Inggris.
+- `kode`: kode universitas.
+- `singkatan`: singkatan universitas.
+- `website`: alamat situs resmi universitas.
+- `aktif`: status aktif/nonaktif.
+- `deskripsi`: keterangan tambahan.
+- `metadata`: informasi tambahan seperti logo, alamat, kontak, dan email.
 
 ---
 
@@ -130,40 +76,6 @@ PATCH /api/v1/universitas/[id]
 
 Entitas **Fakultas** berada di bawah **Universitas**.  
 Satu universitas dapat memiliki banyak fakultas.
-
-### Endpoint
-
-#### Ambil data fakultas berdasarkan ID
-```http
-GET /api/v1/fakultas/[id]
-```
-
-#### List semua fakultas pada universitas tertentu
-```http
-GET /api/v1/list/fakultas/[id_universitas]
-```
-
-#### Tambah fakultas baru
-```http
-POST /api/v1/add/fakultas
-```
-
-#### Edit fakultas
-```http
-POST /api/v1/edit/fakultas/[id]
-```
-
-#### Nonaktifkan fakultas
-```http
-DELETE /api/v1/fakultas/[id]
-```
-
-#### Aktifkan kembali fakultas
-```http
-PATCH /api/v1/fakultas/[id]
-```
-
-### Struktur Data
 
 ```json
 {
@@ -188,9 +100,9 @@ PATCH /api/v1/fakultas/[id]
 }
 ```
 
-### Catatan
-- `id_universitas` menunjukkan bahwa fakultas terhubung ke universitas tertentu.
-- Struktur `metadata` mengikuti pola yang serupa dengan entitas universitas.
+### Keterangan
+- `id_universitas`: relasi ke universitas induk.
+- Struktur `metadata` mengikuti pola yang mirip dengan entitas universitas.
 
 ---
 
@@ -198,40 +110,6 @@ PATCH /api/v1/fakultas/[id]
 
 Entitas **Prodi** berada di bawah **Fakultas**.  
 Satu fakultas dapat memiliki banyak program studi.
-
-### Endpoint
-
-#### Ambil data prodi berdasarkan ID
-```http
-GET /api/v1/prodi/[id]
-```
-
-#### List semua prodi pada fakultas tertentu
-```http
-GET /api/v1/list/prodi/[id_fakultas]
-```
-
-#### Tambah prodi baru
-```http
-POST /api/v1/add/prodi
-```
-
-#### Edit prodi
-```http
-POST /api/v1/edit/prodi/[id]
-```
-
-#### Nonaktifkan prodi
-```http
-DELETE /api/v1/prodi/[id]
-```
-
-#### Aktifkan kembali prodi
-```http
-PATCH /api/v1/prodi/[id]
-```
-
-### Struktur Data
 
 ```json
 {
@@ -257,50 +135,16 @@ PATCH /api/v1/prodi/[id]
 }
 ```
 
-### Catatan
-- `id_fakultas` menunjukkan relasi prodi ke fakultas.
-- `jenjang` dapat digunakan untuk menyimpan nilai seperti `D3`, `S1`, `S2`, `S3`, atau bentuk lain sesuai kebutuhan.
-- `akreditasi` bersifat opsional.
+### Keterangan
+- `id_fakultas`: relasi ke fakultas induk.
+- `jenjang`: contoh `D3`, `S1`, `S2`, `S3`, dan seterusnya.
+- `akreditasi`: status atau peringkat akreditasi program studi.
 
 ---
 
 ## TahunAjaran
 
 Entitas **TahunAjaran** berada di bawah **Prodi** dan digunakan untuk mendefinisikan periode akademik.
-
-### Endpoint
-
-#### Ambil data tahun ajaran berdasarkan ID
-```http
-GET /api/v1/tahunajaran/[id]
-```
-
-#### List semua tahun ajaran pada prodi tertentu
-```http
-GET /api/v1/list/tahunajaran/[id_prodi]
-```
-
-#### Tambah tahun ajaran baru
-```http
-POST /api/v1/add/tahunajaran
-```
-
-#### Edit tahun ajaran
-```http
-POST /api/v1/edit/tahunajaran/[id]
-```
-
-#### Nonaktifkan tahun ajaran
-```http
-DELETE /api/v1/tahunajaran/[id]
-```
-
-#### Aktifkan kembali tahun ajaran
-```http
-PATCH /api/v1/tahunajaran/[id]
-```
-
-### Struktur Data
 
 ```json
 {
@@ -314,9 +158,10 @@ PATCH /api/v1/tahunajaran/[id]
 }
 ```
 
-### Catatan
-- `id_prodi` menunjukkan tahun ajaran milik prodi tertentu.
-- `periode` menggunakan nilai terbatas:
+### Keterangan
+- `id_prodi`: relasi ke prodi induk.
+- `tahun`: tahun akademik.
+- `periode`: salah satu dari:
   - `GANJIL`
   - `GENAP`
   - `PENDEK`
@@ -325,41 +170,7 @@ PATCH /api/v1/tahunajaran/[id]
 
 ## Kurikulum
 
-Entitas **Kurikulum** berada di bawah **Prodi** dan digunakan untuk mendefinisikan struktur kurikulum per tahun.
-
-### Endpoint
-
-#### Ambil data kurikulum berdasarkan ID
-```http
-GET /api/v1/kurikulum/[id]
-```
-
-#### List semua kurikulum pada prodi tertentu
-```http
-GET /api/v1/list/kurikulum/[id_prodi]
-```
-
-#### Tambah kurikulum baru
-```http
-POST /api/v1/add/kurikulum
-```
-
-#### Edit kurikulum
-```http
-POST /api/v1/edit/kurikulum/[id]
-```
-
-#### Nonaktifkan kurikulum
-```http
-DELETE /api/v1/kurikulum/[id]
-```
-
-#### Aktifkan kembali kurikulum
-```http
-PATCH /api/v1/kurikulum/[id]
-```
-
-### Struktur Data
+Entitas **Kurikulum** berada di bawah **Prodi** dan digunakan untuk mendefinisikan struktur kurikulum.
 
 ```json
 {
@@ -372,49 +183,16 @@ PATCH /api/v1/kurikulum/[id]
 }
 ```
 
-### Catatan
-- `id_prodi` menunjukkan kurikulum milik prodi tertentu.
-- `tahun` dapat digunakan untuk menandai tahun mulai atau identitas kurikulum.
+### Keterangan
+- `id_prodi`: relasi ke prodi induk.
+- `tahun`: tahun kurikulum.
+- `aktif`: status aktif/nonaktif kurikulum.
 
 ---
 
 ## ProfilLulusan
 
 Entitas **ProfilLulusan** berada di bawah **Prodi** dan digunakan untuk mendefinisikan profil lulusan yang dituju.
-
-### Endpoint
-
-#### Ambil data profil lulusan berdasarkan ID
-```http
-GET /api/v1/profillulusan/[id]
-```
-
-#### List semua profil lulusan pada prodi tertentu
-```http
-GET /api/v1/list/profillulusan/[id_prodi]
-```
-
-#### Tambah profil lulusan baru
-```http
-POST /api/v1/add/profillulusan
-```
-
-#### Edit profil lulusan
-```http
-POST /api/v1/edit/profillulusan/[id]
-```
-
-#### Nonaktifkan profil lulusan
-```http
-DELETE /api/v1/profillulusan/[id]
-```
-
-#### Aktifkan kembali profil lulusan
-```http
-PATCH /api/v1/profillulusan/[id]
-```
-
-### Struktur Data
 
 ```json
 {
@@ -427,50 +205,17 @@ PATCH /api/v1/profillulusan/[id]
 }
 ```
 
-### Catatan
-- `nomor` dapat digunakan untuk pengurutan profil lulusan.
-- `id_prodi` menunjukkan profil lulusan milik prodi tertentu.
+### Keterangan
+- `id_prodi`: relasi ke prodi induk.
+- `nomor`: nomor urut profil lulusan.
+- `nama`: nama profil lulusan.
 
 ---
 
 ## MasterCPL
 
 Entitas **MasterCPL** berada di bawah **Kurikulum** dan berelasi dengan **ProfilLulusan**.  
-Entitas ini merepresentasikan **Capaian Pembelajaran Lulusan (CPL)** pada level kurikulum.
-
-### Endpoint
-
-#### Ambil data master CPL berdasarkan ID
-```http
-GET /api/v1/mastercpl/[id]
-```
-
-#### List semua master CPL pada kurikulum tertentu
-```http
-GET /api/v1/list/mastercpl/[id_kurikulum]
-```
-
-#### Tambah master CPL baru
-```http
-POST /api/v1/add/mastercpl
-```
-
-#### Edit master CPL
-```http
-POST /api/v1/edit/mastercpl/[id]
-```
-
-#### Nonaktifkan master CPL
-```http
-DELETE /api/v1/mastercpl/[id]
-```
-
-#### Aktifkan kembali master CPL
-```http
-PATCH /api/v1/mastercpl/[id]
-```
-
-### Struktur Data
+Entitas ini merepresentasikan **Capaian Pembelajaran Lulusan (CPL)**.
 
 ```json
 {
@@ -484,55 +229,22 @@ PATCH /api/v1/mastercpl/[id]
 }
 ```
 
-### Catatan
-- `id_kurikulum` menunjukkan CPL milik kurikulum tertentu.
-- `id_profil_lulusan` menunjukkan keterkaitan CPL dengan profil lulusan.
-- `nomor` dapat digunakan untuk penomoran CPL, misalnya `CPL-1`, `CPL-2`, dan seterusnya pada level aplikasi.
+### Keterangan
+- `id_kurikulum`: relasi ke kurikulum induk.
+- `id_profil_lulusan`: relasi ke profil lulusan.
+- `nomor`: nomor urut CPL.
+- `nama`: nama CPL.
 
 ---
 
 ## MataKuliah
 
 Entitas **MataKuliah** berada di bawah **Kurikulum**.  
-Selain informasi dasar mata kuliah, entitas ini juga memuat konfigurasi:
-- rentang nilai (`range`)
-- bobot telusur dan evaluasi
-- pemetaan CPL, CPMK, dan SCPMK
-- relasi kontribusi evaluasi terhadap SCPMK
-
-### Endpoint
-
-#### Ambil data mata kuliah berdasarkan ID
-```http
-GET /api/v1/matakuliah/[id]
-```
-
-#### List semua mata kuliah pada kurikulum tertentu
-```http
-GET /api/v1/list/matakuliah/[id_kurikulum]
-```
-
-#### Tambah mata kuliah baru
-```http
-POST /api/v1/add/matakuliah
-```
-
-#### Edit mata kuliah
-```http
-POST /api/v1/edit/matakuliah/[id]
-```
-
-#### Nonaktifkan mata kuliah
-```http
-DELETE /api/v1/matakuliah/[id]
-```
-
-#### Aktifkan kembali mata kuliah
-```http
-PATCH /api/v1/matakuliah/[id]
-```
-
-### Struktur Data
+Selain data dasar mata kuliah, entitas ini juga memuat:
+- rentang nilai,
+- bobot telusur dan evaluasi,
+- relasi CPL, CPMK, SCPMK,
+- serta kontribusi evaluasi terhadap SCPMK.
 
 ```jsonc
 {
@@ -555,7 +267,6 @@ PATCH /api/v1/matakuliah/[id]
     { "id": 123, "nama": "C", "min": 50, "max": 65, "mode": ">" },
     { "id": 123, "nama": "D", "min": 40, "max": 50, "mode": ">" },
     { "id": 123, "nama": "E", "min": 0, "max": 40, "mode": ">" }
-    /* dan seterusnya */
   ],
   "bobot": {
     "telusur": [
@@ -580,7 +291,6 @@ PATCH /api/v1/matakuliah/[id]
     ],
     "cpl": [
       {
-        /* CPL = Capaian Pembelajaran Lulusan */
         "id": 123,
         "id_matakuliah": 123,
         "id_master_cpl": 123,
@@ -591,7 +301,6 @@ PATCH /api/v1/matakuliah/[id]
         "deskripsi": "string|null",
         "cpmk": [
           {
-            /* CPMK = Capaian Pembelajaran Mata Kuliah */
             "id": 123,
             "id_cpl": 123,
             "nomor": 123,
@@ -601,7 +310,6 @@ PATCH /api/v1/matakuliah/[id]
             "deskripsi": "string|null",
             "scpmk": [
               {
-                /* SCPMK = Sub-Capaian Pembelajaran Mata Kuliah */
                 "id": 123,
                 "id_cpmk": 123,
                 "nomor": 123,
@@ -616,7 +324,6 @@ PATCH /api/v1/matakuliah/[id]
       }
     ],
     "links": [
-      /* Relasi many-to-many antara Evaluasi dan SCPMK */
       { "id": 123, "id_evaluasi": 123, "id_scpmk": 123, "bobot": 123.00, "aktif": true },
       { "id": 123, "id_evaluasi": 123, "id_scpmk": 123, "bobot": 123.00, "aktif": true }
     ]
@@ -624,68 +331,198 @@ PATCH /api/v1/matakuliah/[id]
 }
 ```
 
-### Penjelasan Struktur Mata Kuliah
+### Keterangan
 
 #### Informasi dasar
-- `id_kurikulum`: relasi mata kuliah ke kurikulum.
+- `id_kurikulum`: relasi ke kurikulum induk.
 - `kode`: kode mata kuliah.
 - `nama`: nama mata kuliah.
 - `english`: nama mata kuliah dalam bahasa Inggris.
 - `semester`: semester penempatan mata kuliah.
 - `sks`: jumlah SKS.
-- `pilihan`: penanda apakah mata kuliah bersifat pilihan.
-- `wajib`: penanda apakah mata kuliah bersifat wajib.
-- `paket`: penanda apakah mata kuliah termasuk dalam paket.
+- `pilihan`: penanda apakah mata kuliah pilihan.
+- `wajib`: penanda apakah mata kuliah wajib.
+- `paket`: penanda apakah mata kuliah merupakan bagian dari paket.
 - `obe`: penanda apakah mata kuliah mengikuti skema OBE.
 
 #### Range nilai
-Field `range` digunakan untuk menyimpan interval nilai huruf.  
-Default dapat berupa skema `A` sampai `E`, namun dapat diperluas sesuai kebutuhan.
+Field `range` digunakan untuk menyimpan rentang nilai huruf.  
+Default dapat berupa `A` sampai `E`, dan dapat dikembangkan sesuai kebutuhan.
 
-Contoh:
-- `A`: 85–100
-- `AB`: 75–85
-- `B`: 70–75
-- `BC`: 65–70
-- `C`: 50–65
-- `D`: 40–50
-- `E`: 0–40
+#### Bobot telusur
+`bobot.telusur` menyimpan kelompok penelusuran penilaian.  
+Setiap telusur dapat memiliki satu atau lebih `evaluasi`.
 
-#### Bobot telusur dan evaluasi
-Bagian `bobot.telusur` digunakan untuk mendefinisikan kelompok penelusuran penilaian pada mata kuliah.  
-Setiap `telusur` dapat memiliki satu atau lebih `evaluasi`.
+#### Bobot CPL, CPMK, SCPMK
+Hierarki pembelajaran pada mata kuliah mengikuti struktur berikut:
 
-Contoh:
-- Telusur: Tugas
-- Evaluasi: Tugas 1, Tugas 2, Tugas Besar
-
-#### Bobot CPL, CPMK, dan SCPMK
-Bagian `bobot.cpl` digunakan untuk memetakan kontribusi mata kuliah terhadap CPL.  
-Setiap CPL dapat diturunkan menjadi beberapa CPMK, lalu setiap CPMK dapat diturunkan lagi menjadi beberapa SCPMK.
-
-Hierarki:
 ```text
 CPL
 └── CPMK
     └── SCPMK
 ```
 
-#### Links evaluasi ke SCPMK
-Bagian `bobot.links` digunakan untuk menyimpan relasi kontribusi antara `evaluasi` dengan `SCPMK`.
+#### Links
+`bobot.links` menyimpan relasi kontribusi **many-to-many** antara `evaluasi` dan `SCPMK`.
 
-Karakteristik:
-- bersifat **many-to-many**
-- setiap relasi memiliki `bobot`
-- relasi juga memiliki status `aktif`
+---
+
+# Konvensi Endpoint
+
+Struktur endpoint umum yang digunakan adalah sebagai berikut.
+
+## 1. Akses sebuah entitas
+
+```http
+GET /api/v1/[nama_entitas]/[id]
+```
+
+## 2. List semua entitas
+
+```http
+GET /api/v1/list/[nama_entitas]/[id_parent]
+```
+
+> **Catatan:** khusus entitas **Universitas**, `[id_parent]` tidak diperlukan.
+
+## 3. Insert entitas baru
+
+```http
+POST /api/v1/add/[nama_entitas]
+```
+
+## 4. Update sebuah entitas
+
+```http
+POST /api/v1/edit/[nama_entitas]/[id]
+```
+
+## 5. Nonaktifkan sebuah entitas
+
+```http
+DELETE /api/v1/[nama_entitas]/[id]
+```
+
+## 6. Aktifkan kembali sebuah entitas
+
+```http
+PATCH /api/v1/[nama_entitas]/[id]
+```
+
+---
+
+# Endpoint per Entitas
+
+## Universitas Endpoint
+
+```http
+GET /api/v1/universitas/[id]
+GET /api/v1/list/universitas
+POST /api/v1/add/universitas
+POST /api/v1/edit/universitas/[id]
+DELETE /api/v1/universitas/[id]
+PATCH /api/v1/universitas/[id]
+```
+
+---
+
+## Fakultas Endpoint
+
+```http
+GET /api/v1/fakultas/[id]
+GET /api/v1/list/fakultas/[id_universitas]
+POST /api/v1/add/fakultas
+POST /api/v1/edit/fakultas/[id]
+DELETE /api/v1/fakultas/[id]
+PATCH /api/v1/fakultas/[id]
+```
+
+---
+
+## Prodi Endpoint
+
+```http
+GET /api/v1/prodi/[id]
+GET /api/v1/list/prodi/[id_fakultas]
+POST /api/v1/add/prodi
+POST /api/v1/edit/prodi/[id]
+DELETE /api/v1/prodi/[id]
+PATCH /api/v1/prodi/[id]
+```
+
+---
+
+## TahunAjaran Endpoint
+
+```http
+GET /api/v1/tahunajaran/[id]
+GET /api/v1/list/tahunajaran/[id_prodi]
+POST /api/v1/add/tahunajaran
+POST /api/v1/edit/tahunajaran/[id]
+DELETE /api/v1/tahunajaran/[id]
+PATCH /api/v1/tahunajaran/[id]
+```
+
+---
+
+## Kurikulum Endpoint
+
+```http
+GET /api/v1/kurikulum/[id]
+GET /api/v1/list/kurikulum/[id_prodi]
+POST /api/v1/add/kurikulum
+POST /api/v1/edit/kurikulum/[id]
+DELETE /api/v1/kurikulum/[id]
+PATCH /api/v1/kurikulum/[id]
+```
+
+---
+
+## ProfilLulusan Endpoint
+
+```http
+GET /api/v1/profillulusan/[id]
+GET /api/v1/list/profillulusan/[id_prodi]
+POST /api/v1/add/profillulusan
+POST /api/v1/edit/profillulusan/[id]
+DELETE /api/v1/profillulusan/[id]
+PATCH /api/v1/profillulusan/[id]
+```
+
+---
+
+## MasterCPL Endpoint
+
+```http
+GET /api/v1/mastercpl/[id]
+GET /api/v1/list/mastercpl/[id_kurikulum]
+POST /api/v1/add/mastercpl
+POST /api/v1/edit/mastercpl/[id]
+DELETE /api/v1/mastercpl/[id]
+PATCH /api/v1/mastercpl/[id]
+```
+
+---
+
+## MataKuliah Endpoint
+
+```http
+GET /api/v1/matakuliah/[id]
+GET /api/v1/list/matakuliah/[id_kurikulum]
+POST /api/v1/add/matakuliah
+POST /api/v1/edit/matakuliah/[id]
+DELETE /api/v1/matakuliah/[id]
+PATCH /api/v1/matakuliah/[id]
+```
 
 ---
 
 ## Catatan Umum
 
-- Hampir semua entitas memiliki field `aktif` untuk mendukung mekanisme **soft delete**.
-- Operasi `DELETE` pada dokumentasi ini diasumsikan sebagai **menonaktifkan**, bukan menghapus permanen dari basis data.
-- Operasi `PATCH` digunakan untuk mengaktifkan kembali entitas yang sebelumnya dinonaktifkan.
-- Struktur JSON di atas adalah struktur data konseptual awal dan dapat diperluas sesuai kebutuhan implementasi backend maupun frontend.
+- Hampir semua entitas memiliki field `aktif` untuk mendukung **soft delete**.
+- Operasi `DELETE` pada dokumentasi ini dimaksudkan sebagai **menonaktifkan**, bukan menghapus permanen dari basis data.
+- Operasi `PATCH` digunakan untuk mengaktifkan kembali data yang sebelumnya dinonaktifkan.
+- Struktur JSON pada dokumen ini adalah struktur konseptual awal dan masih dapat dikembangkan sesuai implementasi backend maupun frontend.
 
 ---
 
