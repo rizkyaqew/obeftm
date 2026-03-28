@@ -310,6 +310,7 @@ Selain data dasar mata kuliah, entitas ini juga memuat:
             "nomor": 123,
             "nama": "string",
             "bobot": 123.00,
+            "bobot_skpi": 123.00,
             "aktif": true,
             "deskripsi": "string|null",
             "scpmk": [
